@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  spring-app:
+    container_name: spring_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    env_file:
+      - ./.env
+    environment:
+      - MYSQL_USER=mysqluser
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_PORT=3306
+      - EMAIL_USERNAME=${EMAIL_USERNAME}
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+      - CLIENT_ID=${CLIENT_ID}
+      - CLIENT_SECRET=${CLIENT_SECRET}
+      - CLOUDINARY_NAME=${CLOUDINARY_NAME}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql_db:3306/db_sql?createDatabaseIfNotExist=true
+    networks:
+      - backend
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    env_file:
+      - ./.env
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=db_sql
+      - MYSQL_USER=mysqluser
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - backend
+
+networks:
+  backend:
+
+volumes:
+  mysql-data:
+
+#  docker-compose -f ./docker-compose.yml up -d redis-container
+#  docker-compose up -d
+
+#  mvn clean package

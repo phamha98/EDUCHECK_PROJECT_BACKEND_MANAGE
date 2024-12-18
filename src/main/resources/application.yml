@@ -1,0 +1,66 @@
+
+spring:
+  #MYSQL
+  datasource:
+    username: ${env.MYSQL_USER}
+    password: ${env.MYSQL_PASSWORD}
+    url: jdbc:mysql://localhost:${env.MYSQL_PORT}/db_sql?createDatabaseIfNotExist=true
+
+
+  #The SQL dialect makes Hibernate generate better SQL for the chosen database
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    # Hibernate ddl auto (create, create-drop, validate, update)
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${env.EMAIL_USERNAME}
+    password: ${env.EMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${env.CLIENT_ID}
+            client-secret: ${env.CLIENT_SECRET}
+
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+app:
+  frontEndDomain: ${env.FONTEND_DOMAIN}
+  backEndQuizDomain: ${env.URI_QUIZ_SERVER}
+  corsEndPoint:
+    - ${env.FONTEND_DOMAIN}
+    - http://localhost:8000
+    - http://localhost:3001
+    - http://localhost:3000
+  auth:
+    tokenCookieName: auth_token
+    tokenExpirationMsec: 604800000
+    tokenSecret: key_privateakshdjasd129p8u91p8j$@
+    claimName: roleCode
+
+
+cloudinary:
+  cloud_name: ${env.CLOUDINARY_NAME}
+  api_key: ${env.CLOUDINARY_API_KEY}
+  api_secret: ${env.CLOUDINARY_API_SECRET}
+
